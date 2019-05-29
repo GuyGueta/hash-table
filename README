@@ -1,0 +1,161 @@
+guy245
+
+
+=============================
+=      File description     =
+=============================
+ClosedHashSet.java -a hash-set based on chaining. that is implicating the closed hash Closed hashing
+SimpleHashSet.java - implementation of a hash set
+OpenHashSet.java -  hash-set based on chaining. that is implicating open hash
+CollectionFacadeSet.java - a class that wraps Wraps an underlying Collection
+HashString.java - a class that contains string object or null
+Wrapper.java -  a class that that has-a LinkedList<String> and delegates methods to it,
+SimpleSetPerformanceAnalyzer.java -A class that compares the performance of different data structures
+by certain criteria
+
+=============================
+=          Design           =
+=============================
+In my design, I chose to create one abstract class that contained the main features of the hash set  and then
+ inherited two classes, each of which actually performs a different kind of hash operation. For each
+ of these two classes(ClosedHashSet and OpenHashSet) i actually created another class that supports it
+(Wrapper for OpenHashSet and HashString for ClosedHashSet )its role as an object
+that we initialize within the array. With this object we do the many preform the kind of actions  we need
+to do for this kind of hash chaining
+
+=============================
+=  Implementation details   =
+**The first decision I have made is to call the function that rehash  within the function that tests the
+upper and lower load factor. This is because this is the required action to be followed immediately so to save
+lines of code within the functions add,delete  I have chosen to put the function inside checkUpperBound(),
+checkLowerBound
+**Another decision I have made is to create a variable (boolean) that is called rehashFlag . Its purpose is
+to check with  rehashFlag if we are in the middle of  rehash operation. The reason is that in my function of
+rehash I Using the current list as a temporary list initializes a new list with the new capacity and inserts
+the words in. Because we know that the words already exist in the current list, there is no need to perform
+the contain check.there for when we are doing the add operation we check the flag if it true we don't run the
+contain check cause we are on rehashing mode and with that we are saving time
+
+=============================
+=    Answers to questions   =
+=============================
+. analyze the results -
+    . The time it took to initialize each data structure with data1's words:
+       OpenHashSet = 38567
+       CloseHashSet = 201248
+       **TreeSet = 55
+       LinkedList = 38811
+       HashSet = 51
+
+    . The time it took to initialize each data structure with data2's words:
+        OpenHashSet = 15
+        CloseHashSet = 30
+        TreeSet = 34
+        LinkedList = 19610
+        **HashSet = 4
+
+    .                        initialize data1    initialize data2
+       OpenHashSet                  38567            15
+       CloseHashSet                  201248           30
+       TreeSet                         55             34
+       LinkedList                     38811         19610
+       HashSet                          51           4
+
+    . The different data structures for contains(”hi”) after data1.txt initialization:
+        OpenHashSet = 19
+        ClosedHashSet = 34
+        TreeSet =  100
+        LinkedList = 709582
+        **HashSet = 39
+
+    . The data structures for contains(“-13170890158”) after data1.txt initialization:
+        OpenHashSet = 7
+        ClosedHashSet = 13
+        TreeSet = 105
+        LinkedList = 730090
+        **HashSet = 13
+
+    .                         contains(“hi”)    contains(“-13170890158”)
+        OpenHashSet                   17                        7
+        CloseHashSet                  34                         13
+        TreeSet                       100                       105
+        LinkedList                    709582                   730090
+        HashSet                         39                      13
+
+    . The different data structures for contains(”23”) after data2.txt initialization:
+        OpenHashSet = 55
+        ClosedHashSet = 57
+        TreeSet = 84
+        LinkedList = 189
+        **HashSet = 51
+
+    . The data structures for contains(“hi”) after data2.txt initialization:
+        OpenHashSet = 17
+        ClosedHashSet = 66
+        TreeSet = 126
+        LinkedList = 437211
+        **HashSet = 11
+    .                        contains(“23”)    contains(“hi”)
+       OpenHashSet                     48            17
+       CloseHashSet                    57            66
+       TreeSet                         84            126
+       LinkedList                      189           437211
+       HashSet                          51            11
+
+     The number of iteration for warm-up if its not linked list  : 50000.
+    The number of iteration for warm-up if its  linked list  : 5000.
+    The reason I chose to do this is because a linked list takes much more time to run on each list than on
+    any other set because the running time is O(n) that why i choose that the warming time of the linked list
+    will be 10 time less the size of the real warm up time
+
+    discuss the results:
+
+    1) Account, in separate, for OpenHashSet’s and ClosedHashSet’s bad results for data1.txt?
+
+    Because the text file contains the same hash index for every word for 10000 times then the weakness of
+    OpenHashSets that it will put all he words into the same cell(linked list )and it will cause runtime
+    of O(n) whenwe run on the linked list for cloesd hash set every time we e-increase the calculation
+    of the hash index and it will take time because we will check each time Options up to the correct index
+
+     2) Summarize the strengths and weaknesses of each of the data structures as reflected by
+       the results. Which would you use for which purposes?
+
+       Clearly the data structure is the weakest is the LinkedList
+
+       open hash set is bettr for file with words that have different hash set then closed hash set
+
+       the hash set  The best choice for a data structure that words have different hash code and also will
+       sepport most actions with the best time
+
+       we can see that the tree set is good at adding members but in contain is results are not that good
+
+       we can see that open hash set is mostly preform in every parameter then closed hash set
+
+
+     3) How did your two implementations compare between themselves?
+     I created an array that contains a member of every kind and just checked with the same data for each
+     member  how it managed to perform the various actions we were asked to check (of course, after each
+     measurement I printed the time so that I could see the result and register it)
+
+     4)How did your implementations compare to Java’s built in HashSet?
+     First of all, the implementation of java is much better than mine, but we really notice the difference
+     when we try to arrange a lot of words with the same hash index in our array, whereas for other supporting
+      actions the difference is relatively small for the first case but still quite large
+
+     5) What results surprised you and which did you expect?
+
+     The first thing I was surprised about was that when I ran the code on my computer the times were big and
+     the computer was very hard (probably because it was an old computer) I was very distressed because of it,
+     and the computers and the results were much better. In which we run the code on our actual results were
+     very very large deviations between my results and the results obtained in the aquarium
+
+     The second thing I was very surprised by was that open hash set found -13170890158 in the shortest time
+     I expected that the realization of java hash set  of would be the best exercise in any parameter
+
+     6)If you tried clamping expressions to valid indices in more than one way, what were they
+     and how significant was the speed-up?
+
+     i was clamping in the open hash with both Formulas which I gave and found that the formula
+     that i am using hashCode & (capacity() - CHANGE) is much faster then the other one .
+
+
